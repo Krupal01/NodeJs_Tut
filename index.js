@@ -1,12 +1,6 @@
-console.log("first log")
-
-let data = new Promise((resolve,reject)=>{
-    setTimeout(()=>{
-        resolve(30)
-    },2000)
-})
-
-data.then((data)=>{
-    console.log(data)
-})
-console.log("third log")
+const http = require("http");
+http.createServer((req,resp)=>{
+    resp.writeHead(200,{'Content-Type':'application\json'});
+    resp.write(JSON.stringify({name:'jeck',email:'jeck@gmail.com'}));
+    resp.end();
+}).listen(5000);
