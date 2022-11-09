@@ -12,4 +12,8 @@ app.get("",(req,resp)=>{
 app.get("/about",(req,resp)=>{
     resp.sendFile(`${publicPath}/about.html`)
 })
+
+app.get("*",(req,resp)=>{
+    resp.sendFile(`${publicPath}/error.html`)
+})
 app.listen(5000)
