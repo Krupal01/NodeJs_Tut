@@ -5,15 +5,16 @@ const path = require('path');
 const publicPath = path.join(__dirname,"public_page")
 // app.use(express.static(publicPath));
 
-app.get("",(req,resp)=>{
-    resp.sendFile(`${publicPath}/index.html`)
+app.set('view engine','ejs');
+
+app.get('/profile',(req,resp)=>{
+    const user = {
+        name : 'jack',
+        email : 'jack@jack.com',
+        skill: ['java','c','python']
+    }
+    resp.render('profile',{user})
 })
 
-app.get("/about",(req,resp)=>{
-    resp.sendFile(`${publicPath}/about.html`)
-})
 
-app.get("*",(req,resp)=>{
-    resp.sendFile(`${publicPath}/error.html`)
-})
 app.listen(5000)
