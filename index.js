@@ -5,15 +5,26 @@ const path = require('path');
 const publicPath = path.join(__dirname,"public_page")
 // app.use(express.static(publicPath));
 
-app.set('view engine','ejs');
-
-app.get('/profile',(req,resp)=>{
-    const user = {
-        name : 'jack',
-        email : 'jack@jack.com',
-        skill: ['java','c','python']
+const reqFilter = (req , resp , next)=>{
+    if(!req.query.age){
+        resp.send('please provide age')
     }
-    resp.render('profile',{user})
+    else if(req.query.age < 18){
+        resp.send('you cannot access this site')
+    }
+    else {
+        next()
+    }
+}
+
+app.use(reqFilter)
+
+app.get("",(req,resp)=>{
+    resp.send("index page")
+})
+
+app.get("/user",(req,resp)=>{
+    resp.send("user page")
 })
 
 
