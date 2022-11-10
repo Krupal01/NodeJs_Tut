@@ -5,6 +5,10 @@
     <title>Profile</title>
 </head>
 <body>
+    <!-- gives text of file -->
+    <%= include('common/header'); %> 
+    <!-- give html of file -->
+    <%- include('common/header'); %>
     <h1>Name : <%=user.name%></h1>
     <ul>
         <% user.skill.forEach((item)=>{%>
