@@ -1,42 +1,33 @@
+const express = require('express')
 const dbConnection = require('./mongodb')
+const mongoDb = require('mongodb')
 
-// async function main(){
-//     const data = await (await dbConnection()).find({}).toArray()
-//     console.log(data)
-// }
+const app = express();
+app.use(express.json())
 
-// main()
+app.get('/',async(req,resp)=>{
+    const data = await (await dbConnection()).find({}).toArray()
+    resp.send(data)
+})
 
-// const insert = async () =>{
-//     const db = await dbConnection()
-//     const result = await db.insertOne({
-//         name:"oppo",
-//         price:520,
-//         model:"a35"
-//     })
-//     console.log(result)
+app.post('/',async(req,resp)=>{
+    const data = await (await dbConnection()).insertOne(req.body)
+    resp.send(data)
+})
 
-//     if (result.acknowledged){
-//         console.log("data inserted")
-//     }
-// }
+app.put('/',async(req,resp)=>{
+    const data = await (await dbConnection()).updateOne(
+        {name:req.query.name},
+        {$set:req.body}
+    )
+    resp.send(data)
+})
 
-// insert()
+app.delete('/',async(req,resp)=>{
+    const data = await (await dbConnection()).deleteOne({name : req.query.name})
+    // const data = await (await dbConnection()).deleteOne({id : new mongoDb.ObjectId(req.query.id)})
+    resp.send(data)
+})
 
-// const update = async () =>{
-//     const db = await dbConnection()
-//     const result = await db.updateOne(
-//         {name:"oppo"},
-//         {$set: {name:'vivo',price:60}}
-//     )
-//     console.log(result)
+app.listen(5000)
 
-// }
-// update()
-
-const deleteData = async () =>{
-    const db = await dbConnection()
-    const result = await db.deleteOne({name:'vivo'})
-    console.log(result)
-}
-deleteData()
