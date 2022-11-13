@@ -1,15 +1,8 @@
-const {MongoClient} = require('mongodb');
-// const MongoDB = require('mongodb').MongoClient  we can use any syntex 
-const url = 'mongodb://127.0.0.1:27017';
-const database = "e-comm"
-const client = new MongoClient(url);
+const dbConnection = require('./mongodb')
 
-async function getData(){
-    let result = await client.connect();
-    let db = result.db(database)
-    let collection = db.collection('product')        
-    let response = await collection.find({}).toArray()
-    console.log(response)
+async function main(){
+    const data = await (await dbConnection()).find({}).toArray()
+    console.log(data)
 }
 
-getData()
+main()
