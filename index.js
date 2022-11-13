@@ -1,31 +1,15 @@
-const express = require('express');
-const app = express();
-const path = require('path');
-const reqFilter = require('./middle_ware')
-const route = express.Router();
+const {MongoClient} = require('mongodb');
+// const MongoDB = require('mongodb').MongoClient  we can use any syntex 
+const url = 'mongodb://127.0.0.1:27017';
+const database = "e-comm"
+const client = new MongoClient(url);
 
-const publicPath = path.join(__dirname,"public_page")
-// app.use(express.static(publicPath));
+async function getData(){
+    let result = await client.connect();
+    let db = result.db(database)
+    let collection = db.collection('product')        
+    let response = await collection.find({}).toArray()
+    console.log(response)
+}
 
-
-// app.use(reqFilter)
-route.use(reqFilter)
-
-app.get("",(req,resp)=>{
-    resp.send("index page")
-})
-
-app.get("/user",(req,resp)=>{
-    resp.send("user page")
-})
-
-route.get("/about",(req,resp)=>{
-    resp.send("about page")
-})
-
-route.get("/other",(req,resp)=>{
-    resp.send("other page")
-})
-
-app.use('/',route)
-app.listen(5000)
+getData()
